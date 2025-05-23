@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Institutions List - Institution Management System</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.datatables.net/1.13.4/css/dataTables.bootstrap5.min.css" rel="stylesheet">
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <div class="container">
+            <a class="navbar-brand" href="/">Institution Management</a>
+            <div class="navbar-nav ms-auto">
+                <a class="nav-link" href="/">Add Institution</a>
+                <a class="nav-link" href="/institutions">View Institutions</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mt-4">
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <h4 class="mb-0">Institutions List</h4>
+                        <a href="/" class="btn btn-primary">Add New Institution</a>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table id="institutionsTable" class="table table-striped table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>Name</th>
+                                        <th>Type</th>
+                                        <th>Country</th>
+                                        <th>City</th>
+                                        <th>Headquarter</th>
+                                        <th>Website</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <!-- Data will be loaded via AJAX -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.4/js/dataTables.bootstrap5.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('#institutionsTable').DataTable({
+                ajax: {
+                    url: '/api/institutions',
+                    dataSrc: ''
+                },
+                columns: [
+                    { data: 'name' },
+                    { data: 'type' },
+                    { data: 'country' },
+                    { data: 'city' },
+                    { 
+                        data: 'headquarter', 
+                        render: function(data) {
+                            return data ? '<span class="badge bg-primary">Headquarter</span>' : '<span class="badge bg-secondary">Branch</span>';
+                        }
+                    },
+                    { 
+                        data: 'website', 
+                        render: function(data) {
+                            return data ? '<a href="' + data + '" target="_blank">Visit</a>' : '-';
+                        }
+                    }
+                ],
+                pageLength: 25,
+                responsive: true
+            });
+        });
+    </script>
+</body>
+</html>
